@@ -4,6 +4,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     public Fire Fire;
+    public Sun Sun;
     public GameGUIController GameGUIController;
     public ActionController ActionController;
 

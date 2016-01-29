@@ -10,11 +10,23 @@ public class Sun : MonoBehaviour
 
     private float testProgress = 0;
 
+    private float curProgress;
+    public float TargetProgress;
+
     void Update()
     {
-        testProgress += Time.deltaTime / 5f;
-        if (testProgress > 1) testProgress = 0;
-        SetProgress(testProgress);
+        if (Math.Abs(curProgress - TargetProgress) > 0.01f)
+        {
+            if (curProgress > TargetProgress)
+            {
+                curProgress -= 0.005f;
+            }
+            else
+            {
+                curProgress += 0.005f;
+            }
+        }
+        SetProgress(curProgress);
     }
 
     // perc: 0..1f

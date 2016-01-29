@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
 	void Start ()
 	{
 	    StartCoroutine(StartSpamActions());
+        SoundController.PlayMusic(MusicType.GameDrums);
 	}
 	
 	void Update () {

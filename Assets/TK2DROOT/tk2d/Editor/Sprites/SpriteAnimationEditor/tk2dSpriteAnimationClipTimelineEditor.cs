@@ -17,7 +17,7 @@ namespace tk2dEditor.SpriteAnimationEditor
 				// All pending actions
 				MoveHandle,  
 
-				// Actions
+				// Action
 				Action,
 				Move, Resize
 			}

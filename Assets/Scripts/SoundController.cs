@@ -30,7 +30,14 @@ public class SoundController: MonoBehaviour
 
     public static void PlaySound(SoundType type)
     {
-        AudioSource.PlayClipAtPoint(_soundsDict[type], Vector3.zero);
+        if (_soundsDict[type] != null)
+        {
+            AudioSource.PlayClipAtPoint(_soundsDict[type], Vector3.zero);
+        }
+        else
+        {
+            Debug.Log("The SoundType " + type + " is null");
+        }
     }
 
 }

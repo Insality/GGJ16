@@ -6,11 +6,18 @@ public class Action : MonoBehaviour
     public ActionType Type;
     public tk2dSprite Sprite;
 
+    private BoxCollider _boxCollider;
     private Transform _myTransform;
 
     void OnEnable()
     {
         _myTransform = transform;
+        _boxCollider = GetComponent<BoxCollider>();
+    }
+
+    public bool IsCollideWith(BoxCollider collider)
+    {
+        return _boxCollider.bounds.Intersects(collider.bounds);
     }
 
     public void RefreshGraphics()
@@ -21,6 +28,11 @@ public class Action : MonoBehaviour
     {
         Type = (ActionType)Random.Range(0, Constants.ACTIONS_COUNT);
         RefreshGraphics();
+    }
+
+    public void PlaySound()
+    {
+        PlaySoundByType(Type);   
     }
 
     public void MoveTo(Vector3 target, float speed = 4)
@@ -52,7 +64,7 @@ public class Action : MonoBehaviour
         return "";
     }
 
-    public void PlayMusicByType(ActionType type)
+    public void PlaySoundByType(ActionType type)
     {
         SoundType soundType;
         switch (type) {

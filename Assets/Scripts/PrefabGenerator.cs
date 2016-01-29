@@ -3,6 +3,7 @@
 public class PrefabGenerator : MonoBehaviour
 {
     public GameObject ActionPrefab;
+    public GameObject ShamanPrefab;
 
     public Action GenerateAction(Transform parent)
     {
@@ -10,4 +11,11 @@ public class PrefabGenerator : MonoBehaviour
         action.transform.parent = parent;
         return action;
     }
+
+    public Shaman GenerateShaman(Transform parent) {
+        Shaman shaman = Instantiate(ShamanPrefab).GetComponent<Shaman>();
+        shaman.transform.parent = parent;
+        return shaman;
+    }
+
 }

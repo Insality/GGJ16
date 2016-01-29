@@ -1,13 +1,48 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class Fire : MonoBehaviour {
 
-	void Start () {
-	
-	}
-	
-	void Update () {
-	
-	}
+    public List<Shaman> ShamanList = new List<Shaman>();
+    public float DanceAngle = 0;
+    public float Radius = 1.5f;
+    public float Ratio = 2f;
+
+    public void AddShaman(Shaman shaman)
+    {
+        ShamanList.Add(shaman);
+    }
+
+    void Update()
+    {
+        UpdateShamansPosition();
+        DanceAngle++;
+        if (DanceAngle >= 360)
+        {
+            DanceAngle = 0;
+        }
+    }
+
+    private void UpdateShamansPosition()
+    {
+        if (ShamanList.Count > 0)
+        {
+            float gap = 360/ShamanList.Count;
+
+            for (int i = 0; i < ShamanList.Count; i++)
+            {
+                ShamanList[i].transform.localPosition = GetPositionAround(i, gap);
+            }
+        }
+    }
+
+    private Vector3 GetPositionAround(int i, float gap)
+    {
+        float shamanAngle = DanceAngle + i*gap;
+        shamanAngle %= 360;
+        if (shamanAngle < 0) shamanAngle = 0;
+        var z = (shamanAngle > 0 && shamanAngle < 180) ? 2 : -2;
+        return new Vector3(Radius * (float)Math.Cos(Mathf.Deg2Rad * shamanAngle), Radius * (float)Math.Sin(Mathf.Deg2Rad * shamanAngle) / Ratio, z);
+    }
 }

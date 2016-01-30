@@ -56,6 +56,7 @@ public class SoundController: MonoBehaviour
         if (_soundsDict[type] != null)
         {
             AudioSource.PlayClipAtPoint(_soundsDict[type], Vector3.zero);
+            
         }
         else
         {
@@ -68,7 +69,7 @@ public class SoundController: MonoBehaviour
             _audio.Stop();
             _audio.clip = _musicDict[type];
             _audio.loop = true;
-            _audio.volume = 0.2f;
+            _audio.volume = 0.5f;
             _audio.Play();
         } else {
             Debug.Log("The MusicType " + type + " is null");

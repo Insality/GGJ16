@@ -28,7 +28,7 @@ public class GameController : MonoBehaviour
 	void Start ()
 	{
 //	    StartCoroutine(StartSpamActions());
-        SoundController.PlayMusic(MusicType.GameDrums);
+        
 
         for (int i = 0; i < 4; i++)
         {
@@ -91,11 +91,26 @@ public class GameController : MonoBehaviour
         }
 #endif
 
+	    if (Input.GetKeyDown(KeyCode.Space))
+	    {
+	        if (!_isRunning)
+	        {
+	            StartGame();
+	        }
+	    }
+
         UpdateTimer();
 	    if (CurrentProgress >= 1) CurrentProgress = 0;
         SetProgress(CurrentProgress);
 	}
 
+    void OnMouseDown()
+    {
+        if (!_isRunning)
+        {
+            StartGame();
+        }
+    }
 
     private void UpdateTimer()
     {
@@ -128,6 +143,7 @@ public class GameController : MonoBehaviour
         SetProgress(0);
         _isRunning = true;
         SetGameState(GameState.Dance);
+        SoundController.PlayMusic(MusicType.GameDrums);
 
         StartCoroutine(GameCoroutine());
     }
@@ -142,7 +158,7 @@ public class GameController : MonoBehaviour
                 PreGeneratedActions.Add(actionType);
             }
         }
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 5; i++)
         {
             PreGeneratedActions.Insert(Random.Range(0, PreGeneratedActions.Count), (ActionType)Random.Range(0, MaxActionsVar));
         }
@@ -237,12 +253,16 @@ public class GameController : MonoBehaviour
                 {
                     yield return new WaitForSeconds(Constants.TIME_BETWEEN_ACTIONS);
                 }
+                else
+                {
+                    yield return new WaitForSeconds(Constants.TIME_BETWEEN_ACTIONS/2);
+                }
             }
             Debug.Log("Now Player turn");
 
             SetGameState(GameState.Repeat);
             StartCoroutine(StartSpamActions());
-            StartTimer(7f);
+            StartTimer(8f);
 
             while (_currentState != GameState.Waiting)
             {

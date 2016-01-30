@@ -121,6 +121,34 @@ public class GameGUIController : MonoBehaviour
         }
     }
 
+    void OnMouseDown()
+    {
+        PressZone.transform.localScale = new Vector3(0.9f, 0.9f, 1);
+        foreach (var action in ActionPanelList)
+        {
+            if (action.IsCollideWith(_pressZoneCollider))
+            {
+                action.PlaySound();
+                action.Hide();
+                _gameController.OnActionChosed(action.Type);
+            }
+        }
+        // Remove From ActionLinePanel
+        foreach (var action in ActionStackList)
+        {
+            if (ActionPanelList.Contains(action))
+            {
+                ActionPanelList.Remove(action);
+            }
+        }
+        RefreshStack();
+    }
+
+    void OnMouseUp()
+    {
+        PressZone.transform.localScale = new Vector3(1f, 1f, 1);
+    }
+
     public void SendRandomAction()
     {
         var gen = AppController.GetInstance().GetGenerator();

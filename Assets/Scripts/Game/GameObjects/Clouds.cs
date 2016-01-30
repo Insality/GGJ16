@@ -6,6 +6,8 @@ public class Clouds : MonoBehaviour
     public float Speed;
     public float BorderX;
     private Transform _myTransform;
+    public int Layer;
+    public float StartHeight;
 	// Use this for initialization
 	void OnEnable ()
 	{
@@ -20,14 +22,14 @@ public class Clouds : MonoBehaviour
 	    {
 	        if (_myTransform.localPosition.x > BorderX)
 	        {
-	            _myTransform.localPosition = new Vector3(-12, 3.8f, 18);
+                _myTransform.localPosition = new Vector3(-12, StartHeight, Layer);
 	        }
 	    }
 	    else
 	    {
 	        if (_myTransform.localPosition.x < BorderX)
 	        {
-	            _myTransform.localPosition = new Vector3(12, 3.8f, 18);
+                _myTransform.localPosition = new Vector3(12, StartHeight, Layer);
 	        }
 	    }
 	}

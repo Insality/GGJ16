@@ -8,6 +8,8 @@ public class GameController : MonoBehaviour
     public GameGUIController GameGUIController;
     public ActionController ActionController;
 
+    public float CurrentProgress = 0;
+
 	void Start ()
 	{
 	    StartCoroutine(StartSpamActions());
@@ -25,6 +27,10 @@ public class GameController : MonoBehaviour
             Fire.AddShaman(AppController.GetInstance().GetGenerator().GenerateShaman(Fire.transform));
         }
 #endif
+
+	    CurrentProgress += Time.deltaTime/5;
+	    if (CurrentProgress > 1) CurrentProgress = 0;
+        SetProgress(CurrentProgress);
 	}
 
     IEnumerator StartSpamActions()
@@ -35,5 +41,11 @@ public class GameController : MonoBehaviour
             GameGUIController.SendRandomAction();
             yield return new WaitForSeconds(0.5f);    
         }
+    }
+
+    public void SetProgress(float perc)
+    {
+        Sun.SetTargetProgress(perc);
+        GameGUIController.SetProgress(perc);
     }
 }

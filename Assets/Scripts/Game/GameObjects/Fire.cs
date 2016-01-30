@@ -6,8 +6,8 @@ public class Fire : MonoBehaviour {
 
     public List<Shaman> ShamanList = new List<Shaman>();
     public float DanceAngle = 0;
-    public float Radius = 1.5f;
-    public float Ratio = 2f;
+    public float Radius;
+    public float Ratio;
 
     public void AddShaman(Shaman shaman)
     {

@@ -13,6 +13,10 @@ public class GameGUIController : MonoBehaviour
     public GameObject StackZone;
     private float _gap = 1f;
 
+    public TimePanel TimePanel;
+
+    
+
 
     void OnEnable()
     {
@@ -26,6 +30,11 @@ public class GameGUIController : MonoBehaviour
         UpdateActionStackList();
 
         UpdateControl();
+    }
+
+    public void SetProgress(float perc)
+    {
+        TimePanel.SetPercentage(perc);
     }
 
     void UpdateActionPanelList()

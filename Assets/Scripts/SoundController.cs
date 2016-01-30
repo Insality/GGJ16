@@ -67,6 +67,7 @@ public class SoundController: MonoBehaviour
             _audio.Stop();
             _audio.clip = _musicDict[type];
             _audio.loop = true;
+            _audio.volume = 0.2f;
             _audio.Play();
         } else {
             Debug.Log("The MusicType " + type + " is null");

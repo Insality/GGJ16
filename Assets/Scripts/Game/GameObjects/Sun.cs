@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class Sun : MonoBehaviour
@@ -26,7 +27,13 @@ public class Sun : MonoBehaviour
                 curProgress += 0.005f;
             }
         }
+        if (curProgress > TargetProgress) curProgress = TargetProgress;
         SetProgress(curProgress);
+    }
+
+    public void SetTargetProgress(float perc)
+    {
+        TargetProgress = perc;
     }
 
     // perc: 0..1f

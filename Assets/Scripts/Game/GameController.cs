@@ -26,7 +26,18 @@ public class GameController : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            Fire.AddShaman(AppController.GetInstance().GetGenerator().GenerateShaman(Fire.transform));
+            var shaman = AppController.GetInstance().GetGenerator().GenerateShaman(Fire.transform);
+            
+
+            if (i == 1 || i == 2)
+            {
+                shaman.transform.localScale = new Vector3(0.7f, 0.7f, 1);
+            }
+            if (i == 3)
+            {
+                shaman.transform.localScale = new Vector3(0.85f, 0.85f, 1);
+            }
+            Fire.AddShaman(shaman);
         }
 
 	}
@@ -45,10 +56,34 @@ public class GameController : MonoBehaviour
 	    {
 	        StartGame();
 	    }
-	    if (Input.GetKeyDown(KeyCode.R))
+	    if (Input.GetKeyDown(KeyCode.Alpha1))
 	    {
             Fire.ShamanDance(ActionType.Jump);
 	    }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            Fire.ShamanDance(ActionType.Clap);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            Fire.ShamanDance(ActionType.Magic);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            Fire.ShamanDance(ActionType.Music);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            Fire.ShamanDance(ActionType.Right);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            Fire.ShamanDance(ActionType.Left);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            Fire.ShamanDance(ActionType.Stump);
+        }
 #endif
 
         UpdateTimer();
@@ -151,7 +186,7 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < size; i++)
         {
 //            list.Add((ActionType)Random.Range(0, Constants.ACTIONS_COUNT));
-            list.Add(ActionType.Magic);
+            list.Add(ActionType.Clap);
         }
 
         Debug.Log("New patttern:");

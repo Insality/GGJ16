@@ -46,6 +46,14 @@ public class Action : MonoBehaviour
         Sprite.Build();
     }
 
+
+    public void Hide()
+    {
+        Sprite.gameObject.SetActive(false);
+        
+        _boxCollider.enabled = false;
+    }
+
     public void Randomize()
     {
         SetType((ActionType)Random.Range(0, Constants.ACTIONS_COUNT));
@@ -64,6 +72,7 @@ public class Action : MonoBehaviour
         Anim.enabled = true;
         Anim.Play("ActionParticle");
         SetLifeTime(1.05f);
+        transform.localScale =  new Vector3(1.5f, 1.5f, 1);
         RefreshGraphics();
     }
 

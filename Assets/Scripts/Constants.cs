@@ -8,5 +8,5 @@
 
     public const string SCENE_GAME = "game";
 
-    public const float TIME_BETWEEN_ACTIONS = 1.1f;
+    public const float TIME_BETWEEN_ACTIONS = 1.2f;
 }

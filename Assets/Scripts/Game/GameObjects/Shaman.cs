@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Shaman: MonoBehaviour
@@ -7,6 +8,8 @@ public class Shaman: MonoBehaviour
     public tk2dSpriteAnimator Anim;
 
     private bool _isPlayer = false;
+
+    private List<String> stackMoves = new List<string>();
 
     void OnEnable()
     {
@@ -74,6 +77,7 @@ public class Shaman: MonoBehaviour
                 break;
         }
 
+        
         Anim.Play(animName);
 
         

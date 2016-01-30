@@ -94,11 +94,13 @@ public class GameGUIController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            PressZone.transform.localScale = new Vector3(0.9f, 0.9f, 1);
             foreach (var action in ActionPanelList)
             {
                 if (action.IsCollideWith(_pressZoneCollider))
                 {
                     action.PlaySound();
+                    action.Hide();
                     _gameController.OnActionChosed(action.Type);
                 }
             }
@@ -111,6 +113,11 @@ public class GameGUIController : MonoBehaviour
                 }
             }
             RefreshStack();
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            PressZone.transform.localScale = new Vector3(1f, 1f, 1);
         }
     }
 

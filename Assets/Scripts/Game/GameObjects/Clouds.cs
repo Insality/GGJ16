@@ -16,9 +16,19 @@ public class Clouds : MonoBehaviour
 	void Update ()
 	{
 	    _myTransform.localPosition += new Vector3(Speed*Time.deltaTime, 0, 0);
-	    if (_myTransform.localPosition.x > BorderX)
+	    if (Speed > 0)
 	    {
-            _myTransform.localPosition = new Vector3(-12, 3.8f, 18);
+	        if (_myTransform.localPosition.x > BorderX)
+	        {
+	            _myTransform.localPosition = new Vector3(-12, 3.8f, 18);
+	        }
+	    }
+	    else
+	    {
+	        if (_myTransform.localPosition.x < BorderX)
+	        {
+	            _myTransform.localPosition = new Vector3(12, 3.8f, 18);
+	        }
 	    }
 	}
 }

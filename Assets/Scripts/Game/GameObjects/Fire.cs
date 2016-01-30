@@ -21,7 +21,7 @@ public class Fire : MonoBehaviour {
     void Update()
     {
         UpdateShamansPosition();
-        DanceAngle++;
+//        DanceAngle++;
         if (DanceAngle >= 360)
         {
             DanceAngle = 0;
@@ -48,5 +48,13 @@ public class Fire : MonoBehaviour {
         if (shamanAngle < 0) shamanAngle = 0;
         var z = (shamanAngle > 0 && shamanAngle < 180) ? 2 : -2;
         return new Vector3(Radius * (float)Math.Cos(Mathf.Deg2Rad * shamanAngle), Radius * (float)Math.Sin(Mathf.Deg2Rad * shamanAngle) / Ratio, z);
+    }
+
+    public void ShamanDance(ActionType type)
+    {
+        foreach (var shaman in ShamanList)
+        {
+            shaman.PlayAction(type);
+        }
     }
 }

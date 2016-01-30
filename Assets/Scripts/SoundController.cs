@@ -104,6 +104,7 @@ public enum SoundType
     Music = 6,
     Clap = 7,
     Dance = 8,
+    Magic = 9,
 
     // ====== 
     StartLevel = 10,

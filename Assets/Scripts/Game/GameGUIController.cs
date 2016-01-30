@@ -46,7 +46,6 @@ public class GameGUIController : MonoBehaviour
 
     public void SetProgress(float perc)
     {
-        TimePanel.SetPercentage(perc);
         UpdateBackgroundSprites(perc);
     }
 

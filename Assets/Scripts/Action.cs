@@ -12,6 +12,8 @@ public class Action : MonoBehaviour
     private BoxCollider _boxCollider;
     private Transform _myTransform;
 
+    private bool _isParticle = false;
+
     void OnEnable()
     {
         _myTransform = transform;
@@ -25,7 +27,9 @@ public class Action : MonoBehaviour
 
     public void RefreshGraphics()
     {
-        Sprite.SetSprite(GetSpriteNameByType(Type));
+        var spriteName = GetSpriteNameByType(Type);
+        if (_isParticle) spriteName += "Aura";
+        Sprite.SetSprite(spriteName);
     }
 
     void Update()
@@ -56,9 +60,11 @@ public class Action : MonoBehaviour
 
     public void SetParticle()
     {
+        _isParticle = true;
         Anim.enabled = true;
         Anim.Play("ActionParticle");
         SetLifeTime(1.05f);
+        RefreshGraphics();
     }
 
     private void SetLifeTime(float time)
@@ -94,6 +100,8 @@ public class Action : MonoBehaviour
                 return "Music";
             case ActionType.Clap:
                 return "Clap";
+            case ActionType.Magic:
+                return "Magic";
             case ActionType.Sad:
                 return "SadSmile";
             default:
@@ -125,14 +133,15 @@ public class Action : MonoBehaviour
             case ActionType.Clap:
                 soundType = SoundType.Clap;
                 break;
+            case ActionType.Magic:
+                soundType = SoundType.Magic;
+                break;
             default:
                 Debug.Log("[Error]: Wrong ActionType");
                 return;
         }
         SoundController.PlaySound(soundType);
     } 
-
-
 #endregion
 
 }
@@ -145,5 +154,6 @@ public enum ActionType
     Stump = 3,
     Music = 4,
     Clap = 5,
+    Magic = 6,
     Sad = 10,
 }

@@ -145,6 +145,9 @@ public class Action : MonoBehaviour
             case ActionType.Magic:
                 soundType = SoundType.Magic;
                 break;
+            case ActionType.Sad:
+                soundType = SoundType.WrongHit;
+                break;
             default:
                 Debug.Log("[Error]: Wrong ActionType");
                 return;

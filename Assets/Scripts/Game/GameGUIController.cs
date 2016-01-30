@@ -119,6 +119,11 @@ public class GameGUIController : MonoBehaviour
         {
             PressZone.transform.localScale = new Vector3(1f, 1f, 1);
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     void OnMouseDown()
@@ -175,6 +180,7 @@ public class GameGUIController : MonoBehaviour
         Action action = gen.GenerateAction(parent);
 
         action.SetType(aType);
+        action.PlaySound();
         action.SetParticle();
     }
 

@@ -100,7 +100,11 @@ public class GameController : MonoBehaviour
 	    }
 
         UpdateTimer();
-	    if (CurrentProgress >= 1) CurrentProgress = 0;
+	    if (CurrentProgress >= 1)
+	    {
+	        CurrentProgress = 0;
+	        WinLevel();
+	    }
         SetProgress(CurrentProgress);
 	}
 
@@ -110,6 +114,11 @@ public class GameController : MonoBehaviour
         {
             StartGame();
         }
+    }
+
+    private void WinLevel()
+    {
+        SoundController.PlaySound(SoundType.WinLevel);
     }
 
     private void UpdateTimer()
@@ -158,7 +167,7 @@ public class GameController : MonoBehaviour
                 PreGeneratedActions.Add(actionType);
             }
         }
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 6; i++)
         {
             PreGeneratedActions.Insert(Random.Range(0, PreGeneratedActions.Count), (ActionType)Random.Range(0, MaxActionsVar));
         }
@@ -183,7 +192,7 @@ public class GameController : MonoBehaviour
     {
         Sun.SetTargetProgress(perc);
         GameGUIController.SetProgress(perc);
-        SoundController.SetPitch(0.9f + perc/5f);
+        SoundController.SetPitch(1f + perc/5f);
     }
 
     private void SetGameState(GameState state)
@@ -318,7 +327,8 @@ public class GameController : MonoBehaviour
 
     public void OnWinRound()
     {
-        CurrentProgress += 0.2f;
+        CurrentProgress += 0.19f;
+        SoundController.PlaySound(SoundType.WinRound);
     }
 
     public void OnTimerEnd()

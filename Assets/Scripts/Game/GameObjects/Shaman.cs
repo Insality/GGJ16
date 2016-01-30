@@ -12,6 +12,11 @@ public class Shaman: MonoBehaviour
 
     private List<String> stackMoves = new List<string>();
 
+    void Start()
+    {
+        Anim.Play("ShamanStay");
+    }
+
     void OnEnable()
     {
         Anim.AnimationCompleted += AnimationCompleted;

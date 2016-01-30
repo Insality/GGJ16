@@ -76,10 +76,10 @@ public class Fire : MonoBehaviour {
     {
         for (int i = 0; i < ShamanList.Count; i++)
         {
-            if (i != 0)
-            {
+//            if (i != 0)
+//            {
                 ShamanList[i].PlayAction(type);
-            }
+//            }
         }
     }
 

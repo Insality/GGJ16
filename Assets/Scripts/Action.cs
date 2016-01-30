@@ -54,9 +54,9 @@ public class Action : MonoBehaviour
         _boxCollider.enabled = false;
     }
 
-    public void Randomize()
+    public void Randomize(int MaxVariableActions)
     {
-        SetType((ActionType)Random.Range(0, Constants.ACTIONS_COUNT));
+        SetType((ActionType)Random.Range(0, MaxVariableActions));
         RefreshGraphics();
     }
 
@@ -73,7 +73,7 @@ public class Action : MonoBehaviour
         Anim.Play("ActionParticle");
         SetLifeTime(1.05f);
         transform.localScale =  new Vector3(1.5f, 1.5f, 1);
-        RefreshGraphics();
+            RefreshGraphics();
     }
 
     private void SetLifeTime(float time)
@@ -114,7 +114,7 @@ public class Action : MonoBehaviour
             case ActionType.Sad:
                 return "SadSmile";
             default:
-                Debug.Log("[Error]: Wrong ActionType");
+                Debug.Log("[Error]: Wrong ActionType: " + type);
                 break;
         }
         return "";
@@ -164,5 +164,5 @@ public enum ActionType
     Music = 4,
     Clap = 5,
     Magic = 6,
-    Sad = 10,
+    Sad = 7,
 }

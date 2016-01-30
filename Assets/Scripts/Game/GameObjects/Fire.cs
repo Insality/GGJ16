@@ -5,9 +5,15 @@ using UnityEngine;
 public class Fire : MonoBehaviour {
 
     public List<Shaman> ShamanList = new List<Shaman>();
-    public float DanceAngle = 0;
+    public float DanceAngle;
+    public float TargetDanceAngle;
     public float Radius;
     public float Ratio;
+
+    void Start()
+    {
+        TargetDanceAngle = DanceAngle;
+    }
 
     public void AddShaman(Shaman shaman)
     {
@@ -21,6 +27,22 @@ public class Fire : MonoBehaviour {
     void Update()
     {
         UpdateShamansPosition();
+
+        if (DanceAngle > TargetDanceAngle)
+        {
+            DanceAngle-= Time.deltaTime*8;
+        }
+
+        if (DanceAngle < TargetDanceAngle)
+        {
+            DanceAngle += Time.deltaTime*8;
+        }
+
+        if (Math.Abs(DanceAngle - TargetDanceAngle) < 2)
+        {
+            TargetDanceAngle = DanceAngle;
+        }
+
 //        DanceAngle++;
         if (DanceAngle >= 360)
         {
@@ -67,5 +89,15 @@ public class Fire : MonoBehaviour {
         {
             ShamanList[0].PlayAction(type);
         }
+    }
+
+    public void TurnLeft()
+    {
+        TargetDanceAngle -= 10;
+    }
+
+    public void TurnRight()
+    {
+        TargetDanceAngle += 10;
     }
 }

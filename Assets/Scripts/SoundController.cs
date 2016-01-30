@@ -11,6 +11,7 @@ public class SoundController: MonoBehaviour
     private static Dictionary<SoundType, AudioClip> _soundsDict = new Dictionary<SoundType, AudioClip>();
     private static Dictionary<MusicType, AudioClip> _musicDict = new Dictionary<MusicType, AudioClip>();
     private static AudioSource _audio;
+//    public static float SoundSpeed = 0.9f;
 
     void Start()
     {
@@ -72,6 +73,11 @@ public class SoundController: MonoBehaviour
         } else {
             Debug.Log("The MusicType " + type + " is null");
         }
+    }
+
+    public static void SetPitch(float pitch)
+    {
+        _audio.pitch = pitch;
     }
 
 }

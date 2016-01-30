@@ -126,7 +126,7 @@ public class GameGUIController : MonoBehaviour
         var gen = AppController.GetInstance().GetGenerator();
         Action action = gen.GenerateAction(transform);
 
-        action.Randomize();
+        action.Randomize(_gameController.MaxActionsVar);
         SetPositionStartActionPanel(action.gameObject);
         ActionPanelList.Add(action);
     }
@@ -143,7 +143,7 @@ public class GameGUIController : MonoBehaviour
 
     public void ShowActionIcon(Transform parent, ActionType aType)
     {
-        var gen = AppController.GetInstance().GetGenerator();
+        var gen = AppController.GetInstance().GetGenerator();   
         Action action = gen.GenerateAction(parent);
 
         action.SetType(aType);

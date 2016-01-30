@@ -19,6 +19,12 @@ public class GameController : MonoBehaviour
     private float _actionTimer = -1;
     private float _maxTime = 1;
 
+
+    // Game Settings Difc.
+    public int DanceCount = 2;
+    public float PanelSpeed = 10;
+    public int MaxActionsVar = 4;
+
 	void Start ()
 	{
 //	    StartCoroutine(StartSpamActions());
@@ -27,7 +33,6 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             var shaman = AppController.GetInstance().GetGenerator().GenerateShaman(Fire.transform);
-            
 
             if (i == 1 || i == 2)
             {
@@ -119,11 +124,11 @@ public class GameController : MonoBehaviour
 
     private void StartGame()
     {
-       
         CurrentProgress = 0;
+        SetProgress(0);
         _isRunning = true;
         SetGameState(GameState.Dance);
-        
+
         StartCoroutine(GameCoroutine());
     }
 
@@ -137,9 +142,9 @@ public class GameController : MonoBehaviour
                 PreGeneratedActions.Add(actionType);
             }
         }
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 2; i++)
         {
-            PreGeneratedActions.Insert(Random.Range(0, PreGeneratedActions.Count), (ActionType)Random.Range(0, Constants.ACTIONS_COUNT));
+            PreGeneratedActions.Insert(Random.Range(0, PreGeneratedActions.Count), (ActionType)Random.Range(0, MaxActionsVar));
         }
 
         while (_currentState == GameState.Repeat)
@@ -154,7 +159,7 @@ public class GameController : MonoBehaviour
             {
                 GameGUIController.SendRandomAction();
             }
-            yield return new WaitForSeconds(0.5f);    
+            yield return new WaitForSeconds(0.4f);    
         }
     }
 
@@ -162,6 +167,7 @@ public class GameController : MonoBehaviour
     {
         Sun.SetTargetProgress(perc);
         GameGUIController.SetProgress(perc);
+        SoundController.SetPitch(0.9f + perc/5f);
     }
 
     private void SetGameState(GameState state)
@@ -185,8 +191,10 @@ public class GameController : MonoBehaviour
 
         for (int i = 0; i < size; i++)
         {
-//            list.Add((ActionType)Random.Range(0, Constants.ACTIONS_COUNT));
-            list.Add(ActionType.Clap);
+            var action = (ActionType) (Random.Range(0, MaxActionsVar));
+            if (Fire.DanceAngle > 310 && action == ActionType.Right) action = ActionType.Left;
+            if (Fire.DanceAngle < 250 && action == ActionType.Left) action = ActionType.Right;
+            list.Add(action);
         }
 
         Debug.Log("New patttern:");
@@ -202,19 +210,39 @@ public class GameController : MonoBehaviour
     {
         while (true)
         {
-            DanceList = GeneratePattern(2);
+            var count = DanceCount;
+            if (CurrentProgress > 0.65f)
+            {
+                count++;
+            }
+            DanceList = GeneratePattern(count);
 
             foreach (var action in DanceList)
             {
                 GameGUIController.ShowActionIcon(Fire.transform, action);
                 Fire.ShamanDance(action);
-                yield return new WaitForSeconds(Constants.TIME_BETWEEN_ACTIONS);
+
+                if (action == ActionType.Left)
+                {
+                    Fire.TurnLeft();
+                }
+                if (action == ActionType.Right)
+                {
+                    Fire.TurnRight();
+                }
+
+
+
+                if (DanceList.IndexOf(action) != DanceCount - 1)
+                {
+                    yield return new WaitForSeconds(Constants.TIME_BETWEEN_ACTIONS);
+                }
             }
             Debug.Log("Now Player turn");
 
             SetGameState(GameState.Repeat);
             StartCoroutine(StartSpamActions());
-            StartTimer(5f);
+            StartTimer(7f);
 
             while (_currentState != GameState.Waiting)
             {
@@ -282,7 +310,7 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("WRONG ACTION");
         SetGameState(GameState.Waiting);
-        GameGUIController.ShowActionIcon(Fire.transform, ActionType.Sad);
+        GameGUIController.ShowActionIcon(Fire.transform, ActionType.Sad);   
     }
 
     public void OnRightAction(ActionType action)

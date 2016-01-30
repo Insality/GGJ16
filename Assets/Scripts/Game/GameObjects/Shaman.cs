@@ -28,7 +28,6 @@ public class Shaman: MonoBehaviour
 
     public void SetPlayerState(bool state)
     {
-        _isPlayer = true;
         RefreshGraphics();
     }
 
@@ -76,5 +75,7 @@ public class Shaman: MonoBehaviour
         }
 
         Anim.Play(animName);
+
+        
     }
 }

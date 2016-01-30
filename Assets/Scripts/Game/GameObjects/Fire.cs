@@ -52,9 +52,20 @@ public class Fire : MonoBehaviour {
 
     public void ShamanDance(ActionType type)
     {
-        foreach (var shaman in ShamanList)
+        for (int i = 0; i < ShamanList.Count; i++)
         {
-            shaman.PlayAction(type);
+            if (i != 0)
+            {
+                ShamanList[i].PlayAction(type);
+            }
+        }
+    }
+
+    public void PlayerDance(ActionType type)
+    {
+        if (ShamanList.Count > 0)
+        {
+            ShamanList[0].PlayAction(type);
         }
     }
 }

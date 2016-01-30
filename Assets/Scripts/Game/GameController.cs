@@ -23,6 +23,12 @@ public class GameController : MonoBehaviour
 	{
 //	    StartCoroutine(StartSpamActions());
         SoundController.PlayMusic(MusicType.GameDrums);
+
+        for (int i = 0; i < 4; i++)
+        {
+            Fire.AddShaman(AppController.GetInstance().GetGenerator().GenerateShaman(Fire.transform));
+        }
+
 	}
 	
 	void Update () {
@@ -78,9 +84,11 @@ public class GameController : MonoBehaviour
 
     private void StartGame()
     {
+       
         CurrentProgress = 0;
         _isRunning = true;
         SetGameState(GameState.Dance);
+        
         StartCoroutine(GameCoroutine());
     }
 
@@ -143,7 +151,7 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < size; i++)
         {
 //            list.Add((ActionType)Random.Range(0, Constants.ACTIONS_COUNT));
-            list.Add(ActionType.Clap);
+            list.Add(ActionType.Magic);
         }
 
         Debug.Log("New patttern:");
@@ -245,6 +253,7 @@ public class GameController : MonoBehaviour
     public void OnRightAction(ActionType action)
     {
         GameGUIController.ShowActionIcon(Fire.transform, action);
+        Fire.PlayerDance(action);
     }
 
 }

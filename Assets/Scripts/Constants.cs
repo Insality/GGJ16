@@ -7,4 +7,6 @@
     public const int ACTIONS_COUNT = 6;
 
     public const string SCENE_GAME = "game";
+
+    public const float TIME_BETWEEN_ACTIONS = 0.8f;
 }

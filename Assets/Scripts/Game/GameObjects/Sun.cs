@@ -45,6 +45,6 @@ public class Sun : MonoBehaviour
         var newY = (float)(StartHeight + (ExtraHeight * 2 * (0.5 - Math.Pow(Math.Abs(centerPerc), 2))));
         var newX = LeftBorderX + Math.Abs(LeftBorderX)*2 * perc;
         
-        transform.localPosition = new Vector3(newX, newY, -2);
+        transform.localPosition = new Vector3(newX, newY, 10);
     }
 }

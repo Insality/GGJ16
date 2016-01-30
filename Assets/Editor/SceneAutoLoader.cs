@@ -86,7 +86,7 @@ static class SceneAutoLoader
         if (EditorApplication.isPlaying && !EditorApplication.isPlayingOrWillChangePlaymode)
         {
             // User pressed stop -- reload previous scene.
-            if (!EditorApplication.OpenScene(PreviousScene))
+
             {
                 Debug.LogError(string.Format("error: scene not found: {0}", PreviousScene));
             }

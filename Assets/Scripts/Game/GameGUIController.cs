@@ -10,13 +10,19 @@ public class GameGUIController : MonoBehaviour
     private BoxCollider _pressZoneCollider;
     private Vector3 _actionPanelTarget;
 
+    [SerializeField] private tk2dSprite GroundBackground;
+    [SerializeField] private tk2dSprite SkyBackground;
+
     public GameObject StackZone;
     private float _gap = 1f;
 
     public TimePanel TimePanel;
 
-    
+    [SerializeField]
+    private GameController _gameController;
 
+    private bool _isNeedToCleanActionPanel = false;
+    
 
     void OnEnable()
     {
@@ -30,21 +36,47 @@ public class GameGUIController : MonoBehaviour
         UpdateActionStackList();
 
         UpdateControl();
+
+        if (_isNeedToCleanActionPanel)
+        {
+            ClearActionPanel();
+            
+        }
     }
 
     public void SetProgress(float perc)
     {
         TimePanel.SetPercentage(perc);
+        UpdateBackgroundSprites(perc);
     }
 
     void UpdateActionPanelList()
     {
         foreach (var action in ActionPanelList)
         {
-            action.MoveTo(_actionPanelTarget, 6);
+            action.MoveTo(_actionPanelTarget, 3);
         }
 
         RefreshPanel();
+    }
+
+    void UpdateBackgroundSprites(float perc)
+    {
+        if (perc < 0.33f)
+        {
+            GroundBackground.SetSprite("BackgroundGround1");
+            SkyBackground.SetSprite("BackgroundSky1");
+        }
+        else if (perc < 0.67f)
+        {
+            GroundBackground.SetSprite("BackgroundGround2");
+            SkyBackground.SetSprite("BackgroundSky2");
+        }
+        else
+        {
+            GroundBackground.SetSprite("BackgroundGround3");
+            SkyBackground.SetSprite("BackgroundSky3");
+        }
     }
 
     void UpdateActionStackList()
@@ -59,7 +91,7 @@ public class GameGUIController : MonoBehaviour
         }
     }
 
-    void UpdateControl()
+    void UpdateControl()    
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -67,8 +99,8 @@ public class GameGUIController : MonoBehaviour
             {
                 if (action.IsCollideWith(_pressZoneCollider))
                 {
-                    ActionStackList.Add(action);
                     action.PlaySound();
+                    _gameController.OnActionChosed(action.Type);
                 }
             }
             // Remove From ActionLinePanel
@@ -91,6 +123,25 @@ public class GameGUIController : MonoBehaviour
         action.Randomize();
         SetPositionStartActionPanel(action.gameObject);
         ActionPanelList.Add(action);
+    }
+
+    public void SendPanelAction(ActionType aType)
+    {
+        var gen = AppController.GetInstance().GetGenerator();
+        Action action = gen.GenerateAction(transform);
+
+        action.SetType(aType);
+        SetPositionStartActionPanel(action.gameObject);
+        ActionPanelList.Add(action);
+    }
+
+    public void ShowActionIcon(Transform parent, ActionType aType)
+    {
+        var gen = AppController.GetInstance().GetGenerator();
+        Action action = gen.GenerateAction(parent);
+
+        action.SetType(aType);
+        action.SetParticle();
     }
 
     private void SetPositionStartActionPanel(GameObject obj)
@@ -117,5 +168,21 @@ public class GameGUIController : MonoBehaviour
             ActionStackList.Remove(firstAction);
             Destroy(firstAction.gameObject);
         }
+    }
+
+    public void FlagClearActionPanel()
+    {
+        _isNeedToCleanActionPanel = true;
+        ;
+    }
+
+    private void ClearActionPanel()
+    {
+        foreach (var action in ActionPanelList)
+        {
+            Destroy(action.gameObject);
+        }
+        ActionPanelList.Clear();
+        _isNeedToCleanActionPanel = false;
     }
 }

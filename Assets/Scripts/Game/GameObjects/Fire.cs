@@ -11,6 +11,10 @@ public class Fire : MonoBehaviour {
 
     public void AddShaman(Shaman shaman)
     {
+        if (ShamanList.Count == 0)
+        {
+            shaman.SetPlayerState(true);
+        }
         ShamanList.Add(shaman);
     }
 

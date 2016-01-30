@@ -7,6 +7,6 @@ public class TimePanel : MonoBehaviour {
     
     public void SetPercentage(float perc)
     {
-        FillBar.ClipRect = new Rect(0, 0, perc, 1);
+        FillBar.ClipRect = new Rect(0, 0, 1-perc, 1);
     }
 }

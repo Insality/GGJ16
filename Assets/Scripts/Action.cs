@@ -6,6 +6,9 @@ public class Action : MonoBehaviour
     public ActionType Type;
     public tk2dSprite Sprite;
 
+    public Animator Anim;
+
+    private float _destroyDelay = -1;
     private BoxCollider _boxCollider;
     private Transform _myTransform;
 
@@ -24,11 +27,45 @@ public class Action : MonoBehaviour
     {
         Sprite.SetSprite(GetSpriteNameByType(Type));
     }
+
+    void Update()
+    {
+        if (_destroyDelay != -1)
+        {
+            _destroyDelay -= Time.deltaTime;
+            if (_destroyDelay < 0)
+            {
+                Destroy(gameObject);
+            }
+        }
+
+        Sprite.Build();
+    }
+
     public void Randomize()
     {
-        Type = (ActionType)Random.Range(0, Constants.ACTIONS_COUNT);
+        SetType((ActionType)Random.Range(0, Constants.ACTIONS_COUNT));
         RefreshGraphics();
     }
+
+    public void SetType(ActionType type)
+    {
+        Type = type;
+        RefreshGraphics();
+    }
+
+    public void SetParticle()
+    {
+        Anim.enabled = true;
+        Anim.Play("ActionParticle");
+        SetLifeTime(1.05f);
+    }
+
+    private void SetLifeTime(float time)
+    {
+        _destroyDelay = time;
+    }
+
 
     public void PlaySound()
     {
@@ -57,6 +94,8 @@ public class Action : MonoBehaviour
                 return "Music";
             case ActionType.Clap:
                 return "Clap";
+            case ActionType.Sad:
+                return "SadSmile";
             default:
                 Debug.Log("[Error]: Wrong ActionType");
                 break;
@@ -87,9 +126,8 @@ public class Action : MonoBehaviour
                 soundType = SoundType.Clap;
                 break;
             default:
-                soundType = SoundType.Clap;
                 Debug.Log("[Error]: Wrong ActionType");
-                break;
+                return;
         }
         SoundController.PlaySound(soundType);
     } 
@@ -107,4 +145,5 @@ public enum ActionType
     Stump = 3,
     Music = 4,
     Clap = 5,
+    Sad = 10,
 }

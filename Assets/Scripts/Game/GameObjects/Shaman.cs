@@ -72,7 +72,7 @@ public class Shaman: MonoBehaviour
                 animName = "ShamanRight";
                 break;
             case ActionType.Left:
-                animName = "ShamanLeft";
+                animName = "ShamanRight";
                 break;
             case ActionType.Jump:
                 animName = "ShamanJump";
@@ -105,5 +105,14 @@ public class Shaman: MonoBehaviour
         }
 
 
+
+    }
+
+    public void LoopAction(ActionType type)
+    {
+        for (int i = 0; i < 100; i++)
+        {
+            PlayAction(type);
+        }
     }
 }

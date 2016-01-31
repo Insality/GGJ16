@@ -143,7 +143,7 @@ public class Action : MonoBehaviour
                 soundType = SoundType.Clap;
                 break;
             case ActionType.Magic:
-                soundType = SoundType.Magic;
+                soundType = SoundType.Dance;
                 break;
             case ActionType.Sad:
                 soundType = SoundType.WrongHit;

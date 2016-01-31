@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class GameController : MonoBehaviour
     private float _maxTime = 1;
 
 
+    public static int Difficulty;
     // Game Settings Difc.
     public int DanceCount = 2;
     public float PanelSpeed = 10;
@@ -28,8 +30,9 @@ public class GameController : MonoBehaviour
 	void Start ()
 	{
 //	    StartCoroutine(StartSpamActions());
-        
 
+        SoundController.StopMusic();
+	    Difficulty = AppController.GetInstance().Difc;
         for (int i = 0; i < 4; i++)
         {
             var shaman = AppController.GetInstance().GetGenerator().GenerateShaman(Fire.transform);
@@ -63,31 +66,31 @@ public class GameController : MonoBehaviour
 	    }
 	    if (Input.GetKeyDown(KeyCode.Alpha1))
 	    {
-            Fire.ShamanDance(ActionType.Jump);
+            Fire.AllDance(ActionType.Jump);
 	    }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            Fire.ShamanDance(ActionType.Clap);
+            Fire.AllDance(ActionType.Clap);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            Fire.ShamanDance(ActionType.Magic);
+            Fire.AllDance(ActionType.Magic);
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            Fire.ShamanDance(ActionType.Music);
+            Fire.AllDance(ActionType.Music);
         }
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            Fire.ShamanDance(ActionType.Right);
+            Fire.AllDance(ActionType.Right);
         }
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-            Fire.ShamanDance(ActionType.Left);
+            Fire.AllDance(ActionType.Left);
         }
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
-            Fire.ShamanDance(ActionType.Stump);
+            Fire.AllDance(ActionType.Stump);
         }
 #endif
 
@@ -100,9 +103,10 @@ public class GameController : MonoBehaviour
 	    }
 
         UpdateTimer();
-	    if (CurrentProgress >= 1)
+	    if (CurrentProgress >= 1 && _currentState != GameState.Winning)
 	    {
-	        CurrentProgress = 0;
+//	        CurrentProgress = 0;
+	        CurrentProgress = 1;
 	        WinLevel();
 	    }
         SetProgress(CurrentProgress);
@@ -116,10 +120,6 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void WinLevel()
-    {
-        SoundController.PlaySound(SoundType.WinLevel);
-    }
 
     private void UpdateTimer()
     {
@@ -193,6 +193,33 @@ public class GameController : MonoBehaviour
         Sun.SetTargetProgress(perc);
         GameGUIController.SetProgress(perc);
         SoundController.SetPitch(1f + perc/5f);
+
+        if (Difficulty == 0)
+        {
+            if (perc < 0.33)
+            {
+                MaxActionsVar = 4;
+            }
+            else
+            {
+                MaxActionsVar = 5;
+            }
+        }
+        if (Difficulty == 1)
+        {
+            if (perc < 0.33)
+            {
+                MaxActionsVar = 5;
+            }
+            if (perc < 0.66)
+            {
+                MaxActionsVar = 6;
+            }
+            else
+            {
+                MaxActionsVar = 7;
+            }
+        }
     }
 
     private void SetGameState(GameState state)
@@ -216,7 +243,7 @@ public class GameController : MonoBehaviour
 
         for (int i = 0; i < size; i++)
         {
-            var action = (ActionType) (Random.Range(0, MaxActionsVar));
+            var action = (ActionType)(Random.Range(0, MaxActionsVar));
             if (Fire.DanceAngle > 310 && action == ActionType.Right) action = ActionType.Left;
             if (Fire.DanceAngle < 250 && action == ActionType.Left) action = ActionType.Right;
             list.Add(action);
@@ -236,9 +263,17 @@ public class GameController : MonoBehaviour
         while (true)
         {
             var count = DanceCount;
+            if (CurrentProgress > 0.30f)
+            {
+                count++;
+            }
             if (CurrentProgress > 0.65f)
             {
                 count++;
+            }
+            if (Difficulty == 1)
+            {
+                count += 2;
             }
             DanceList = GeneratePattern(count);
 
@@ -256,8 +291,6 @@ public class GameController : MonoBehaviour
                     Fire.TurnRight();
                 }
 
-
-
                 if (DanceList.IndexOf(action) != DanceCount - 1)
                 {
                     yield return new WaitForSeconds(Constants.TIME_BETWEEN_ACTIONS);
@@ -271,7 +304,7 @@ public class GameController : MonoBehaviour
 
             SetGameState(GameState.Repeat);
             StartCoroutine(StartSpamActions());
-            StartTimer(8f);
+            StartTimer(6f + count/2);
 
             while (_currentState != GameState.Waiting)
             {
@@ -327,7 +360,8 @@ public class GameController : MonoBehaviour
 
     public void OnWinRound()
     {
-        CurrentProgress += 0.19f;
+//        CurrentProgress += 0.15f;
+        CurrentProgress += 1f;
         SoundController.PlaySound(SoundType.WinRound);
     }
 
@@ -338,7 +372,6 @@ public class GameController : MonoBehaviour
 
     public void OnErrorAction()
     {
-        Debug.Log("WRONG ACTION");
         SetGameState(GameState.Waiting);
         GameGUIController.ShowActionIcon(Fire.transform, ActionType.Sad);   
     }
@@ -347,6 +380,33 @@ public class GameController : MonoBehaviour
     {
         GameGUIController.ShowActionIcon(Fire.transform, action);
         Fire.PlayerDance(action);
+
+        if (action == ActionType.Left)
+        {
+            Fire.TurnLeft();
+        }
+        if (action == ActionType.Right)
+        {
+            Fire.TurnRight();
+        }
+    }
+    private void WinLevel()
+    {
+        SoundController.PlaySound(SoundType.WinLevel);
+        SetGameState(GameState.Winning);
+        StartCoroutine(StartWinGameAnimation());
+    }
+
+    private IEnumerator StartWinGameAnimation()
+    {
+        yield return  new WaitForSeconds(1f);
+        Fire.AllDance(ActionType.Magic);
+        Fire.AllDance(ActionType.Magic);
+        Fire.AllDance(ActionType.Magic);
+        Fire.AllDance(ActionType.Magic);
+
+        yield return new WaitForSeconds(6f);
+        SceneManager.LoadScene(Constants.SCENE_MENU);
     }
 
 }
@@ -357,4 +417,5 @@ public enum GameState
     Dance = 0,
     Repeat = 1,
     Waiting = 2,
+    Winning = 3,
 }

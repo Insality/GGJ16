@@ -5,12 +5,13 @@ public class AppController : MonoBehaviour
 
     private static AppController _appController;
     public PrefabGenerator PrefabGenerator;
+    public int Difc = 0;
 
     void Start()
     {
         _appController = this;
         DontDestroyOnLoad(gameObject);
-        LoadScene(Constants.SCENE_GAME);
+        LoadScene(Constants.SCENE_MENU);
     }
 
     public void LoadScene(string sceneName)

@@ -74,20 +74,38 @@ public class Fire : MonoBehaviour {
 
     public void ShamanDance(ActionType type)
     {
+            if (type == ActionType.Left || type == ActionType.Right)
+        {
+            AllDance(type);
+            return;
+        }
         for (int i = 0; i < ShamanList.Count; i++)
         {
-//            if (i != 0)
-//            {
+            if (i != 0)
+            {
                 ShamanList[i].PlayAction(type);
-//            }
+            }
         }
     }
 
     public void PlayerDance(ActionType type)
     {
+        if (type == ActionType.Left || type == ActionType.Right)
+        {
+            AllDance(type);
+            return;
+        }
         if (ShamanList.Count > 0)
         {
             ShamanList[0].PlayAction(type);
+        }
+    }
+
+    public void AllDance(ActionType type)
+    {
+        for (int i = 0; i < ShamanList.Count; i++)
+        {
+             ShamanList[i].PlayAction(type);
         }
     }
 

@@ -69,12 +69,17 @@ public class SoundController: MonoBehaviour
             _audio.Stop();
             _audio.clip = _musicDict[type];
             _audio.loop = true;
-            _audio.volume = 0.15f;
+            _audio.volume = 0.25f;
             _audio.spatialBlend = 0;
             _audio.Play();
         } else {
             Debug.Log("The MusicType " + type + " is null");
         }
+    }
+
+    public static void StopMusic()
+    {
+        _audio.Stop();
     }
 
     public static void SetPitch(float pitch)
@@ -124,4 +129,5 @@ public enum SoundType
 
 public enum MusicType {
     GameDrums = 0,
+    Menu = 1,
 }

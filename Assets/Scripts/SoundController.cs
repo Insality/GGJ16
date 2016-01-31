@@ -70,6 +70,10 @@ public class SoundController: MonoBehaviour
             _audio.clip = _musicDict[type];
             _audio.loop = true;
             _audio.volume = 0.25f;
+            if (type == MusicType.GameDrums)
+            {
+                _audio.volume = 0.55f;
+            }
             _audio.spatialBlend = 0;
             _audio.Play();
         } else {

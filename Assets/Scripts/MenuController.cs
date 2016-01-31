@@ -19,6 +19,7 @@ public class MenuController : MonoBehaviour
             shaman.LoopAction(ActionType.Magic);
         }
         SoundController.PlayMusic(MusicType.Menu);
+        SoundController.SetPitch(0.9f);
     }
     void OnEnable()
     {

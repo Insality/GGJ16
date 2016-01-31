@@ -360,8 +360,8 @@ public class GameController : MonoBehaviour
 
     public void OnWinRound()
     {
-//        CurrentProgress += 0.15f;
-        CurrentProgress += 1f;
+        CurrentProgress += 0.15f;
+//        CurrentProgress += 1f;
         SoundController.PlaySound(SoundType.WinRound);
     }
 
